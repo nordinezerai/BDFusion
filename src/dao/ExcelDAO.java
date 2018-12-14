@@ -28,15 +28,19 @@ public class ExcelDAO {
 
             Connection con = DriverManager.getConnection(myDB, "", "");
             Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery("select ID, Nom, Prenom from [2006$]");
+
+            // On merge les deux table 2006 et 2007 avec le mot clé UNION
+            ResultSet rs = stmt.executeQuery("select ID, Nom, Prenom from [2006$] where Statut='enseignant' UNION select ID, Nom, Prenom from [2007$] where Statut='enseignant' ");
 
             while (rs.next()) {
                 int id = rs.getInt(1);
                 String nom = rs.getString(2);
                 String prenom = rs.getString(3);
 
-                System.out.println(id + " " + nom + " " + prenom);
+                Enseignant ens = new Enseignant(id,nom,prenom,"");
+                listEns.add(ens);
             }
+
             rs.close();
             stmt.close();
         } catch (SQLException e) {
