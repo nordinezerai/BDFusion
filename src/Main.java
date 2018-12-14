@@ -25,17 +25,17 @@ public class Main {
        }
 
         System.out.println("=====================================================") ;
-        System.out.println("2. Nombres d'etudiants dont le pays est la France") ;
+        System.out.println("2. Nombres d'etudiants dont le pays de provenance est la France") ;
 
         // Récupération de tout les étudiants toutes sources confondues
         List<Etudiant> listEt = mediateur.listEtudiants();
-        for(int i = 0 ; i < listEt.size() ; i++){
 
-            System.out.println("Id : " +listEt.get(i).getId());
-            System.out.println("Nom " +listEt.get(i).getNom());
-            System.out.println("Prénom : " +listEt.get(i).getPrenom());
-            System.out.println("Age : " +listEt.get(i).getAge()+ " ans");
+        int nb = 0;
+        for(int i = 0 ; i < listEt.size() ; i++){
+            if(listEt.get(i).getProvenance().equalsIgnoreCase("France")
+                    || listEt.get(i).getProvenance().equalsIgnoreCase("Fr") ) nb++;
         }
 
+        System.out.println("Total : " + nb);
     }
 }

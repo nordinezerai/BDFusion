@@ -46,6 +46,8 @@ public class Mediateur {
         List<Etudiant> list = new ArrayList<Etudiant>();
 
         list.addAll(xmldao.listEtudiants());
+        list.addAll(exceldao.listEtudiants());
+        list.addAll(sqldao.listEtudiants());
 
         //Suppression des doublons
         for(int i=0;i<list.size();i++){
