@@ -2,7 +2,12 @@ package dao;
 
 import model.Enseignant;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +20,7 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
+import model.Etudiant;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -136,5 +142,87 @@ public class XMLDAO {
         }
 
         return listEns;
+    }
+
+    public List<Etudiant> listEtudiants() {
+        List<Etudiant> listEt = new ArrayList<Etudiant>();
+
+        try{
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            File fileXML = new File(filepath);
+            Document xml = builder.parse(fileXML);
+            Element root = xml.getDocumentElement();
+            XPathFactory xpf = XPathFactory.newInstance();
+            XPath path = xpf.newXPath();
+
+            String expression = "//Etudiant";
+
+            NodeList list = (NodeList)path.evaluate(expression, root, XPathConstants.NODESET);
+            int nodesLength = list.getLength();
+
+            for(int i = 0 ; i < nodesLength; i++){
+                Node n = list.item(i);
+
+                path.compile("NumEt");
+                path.compile("nom");
+                path.compile("Provenance");
+                path.compile("FormationPrecedante");
+                path.compile("Pays_formation_precedante");
+                path.compile("AnneeDebut");
+                path.compile("dateNaissance");
+                path.compile("Niveau_insertion");
+
+                NodeList list1 = (NodeList)path.evaluate("NumEt", n, XPathConstants.NODESET);
+                NodeList list2 = (NodeList)path.evaluate("nom", n, XPathConstants.NODESET);
+                NodeList list3 = (NodeList)path.evaluate("Provenance", n, XPathConstants.NODESET);
+                NodeList list4 = (NodeList)path.evaluate("FormationPrecedante", n, XPathConstants.NODESET);
+                NodeList list5 = (NodeList)path.evaluate("Pays_formation_precedante", n, XPathConstants.NODESET);
+                NodeList list6 = (NodeList)path.evaluate("AnneeDebut", n, XPathConstants.NODESET);
+                NodeList list7 = (NodeList)path.evaluate("dateNaissance", n, XPathConstants.NODESET);
+                NodeList list8 = (NodeList)path.evaluate("Niveau_insertion", n, XPathConstants.NODESET);
+
+                int nodesLength2 = list1.getLength();
+
+                for(int j = 0; j < nodesLength2; j++){
+
+                    Node n1 = list1.item(j);
+                    Node n2 = list2.item(j);
+                    Node n3 = list3.item(j);
+                    Node n4 = list4.item(j);
+                    Node n5 = list5.item(j);
+                    Node n6 = list6.item(j);
+                    Node n7 = list7.item(j);
+                    Node n8 = list8.item(j);
+
+                    // On souhaite l'age alors qu'on a la date de naissance
+                    int age = getAge(new SimpleDateFormat("yyyy/mm/dd").parse(n7.getTextContent()),new Date());
+
+                    Etudiant et = new Etudiant(Integer.parseInt(n1.getTextContent()),n2.getTextContent(),"",n3.getTextContent(),n4.getTextContent(),n5.getTextContent(),Integer.parseInt(n6.getTextContent().substring(0,4)),age,n8.getTextContent());
+
+                    listEt.add(et);
+                }
+            }
+        }
+        catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return listEt;
+    }
+
+    public int getAge(Date birthDate, Date currentDate){
+    DateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+    int d1 = Integer.parseInt(formatter.format(birthDate));
+        int d2 = Integer.parseInt(formatter.format(currentDate));
+        int age = (d2 - d1) / 10000;
+        return age;
     }
 }
