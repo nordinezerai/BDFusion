@@ -1,5 +1,6 @@
 package dao;
 
+import model.Cours;
 import model.Enseignant;
 
 import java.text.DateFormat;
@@ -223,5 +224,62 @@ public class XMLDAO {
         int d2 = Integer.parseInt(formatter.format(currentDate));
         int age = (d2 - d1) / 10000;
         return age;
+    }
+
+    public List<Cours> listCours() {
+        List<Cours> listCours = new ArrayList<Cours>();
+
+        try{
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            File fileXML = new File(filepath);
+            Document xml = builder.parse(fileXML);
+            Element root = xml.getDocumentElement();
+            XPathFactory xpf = XPathFactory.newInstance();
+            XPath path = xpf.newXPath();
+
+            String expression = "//Cours";
+
+            NodeList list = (NodeList)path.evaluate(expression, root, XPathConstants.NODESET);
+            int nodesLength = list.getLength();
+
+            for(int i = 0 ; i < nodesLength; i++){
+                Node n = list.item(i);
+
+                path.compile("ID_cours");
+                path.compile("Type");
+                path.compile("Niveau");
+                path.compile("Nb_heures");
+
+                NodeList list1 = (NodeList)path.evaluate("ID_cours", n, XPathConstants.NODESET);
+                NodeList list2 = (NodeList)path.evaluate("Type", n, XPathConstants.NODESET);
+                NodeList list3 = (NodeList)path.evaluate("Niveau", n, XPathConstants.NODESET);
+                NodeList list4 = (NodeList)path.evaluate("Nb_heures", n, XPathConstants.NODESET);
+
+                int nodesLength2 = list1.getLength();
+
+                for(int j = 0; j < nodesLength2; j++){
+
+                    Node n1 = list1.item(j);
+                    Node n2 = list2.item(j);
+                    Node n3 = list3.item(j);
+                    Node n4 = list4.item(j);
+
+                    Cours c = new Cours(Integer.parseInt(n1.getTextContent()),"", n2.getTextContent(),n3.getTextContent(),Integer.parseInt(n4.getTextContent()));
+
+                    listCours.add(c);
+                }
+            }
+        }
+        catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        } catch (SAXException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (XPathExpressionException e) {
+            e.printStackTrace();
+        }
+
+        return listCours;
     }
 }

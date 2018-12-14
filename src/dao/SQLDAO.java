@@ -1,5 +1,6 @@
 package dao;
 
+import model.Cours;
 import model.Enseignant;
 import model.Etudiant;
 
@@ -89,6 +90,37 @@ public class SQLDAO {
         }
 
         return listEt;
+    }
+
+    public List<Cours> listCours() {
+        List<Cours> listCours = new ArrayList<Cours>();
+
+        try {
+            Class.forName( "com.mysql.jdbc.Driver" );
+            Connection connexion = null;
+            Statement statement = null;
+            ResultSet resultat = null;
+            connexion = DriverManager.getConnection( url, "root", "" );
+            statement = connexion.createStatement();
+            resultat = statement.executeQuery( "SELECT NumCours, libele, type, niveau FROM cours;" );
+
+            while ( resultat.next() ) {
+                int id = resultat.getInt( "NumCours" );
+                String libele = resultat.getString( "libele" );
+                String type = resultat.getString( "type" );
+                String niveau = resultat.getString( "niveau" );
+
+                Cours c = new Cours(id,libele,type,niveau,0);
+                listCours.add(c);
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return listCours;
     }
 
     public int getAge(java.util.Date birthDate, Date currentDate){
