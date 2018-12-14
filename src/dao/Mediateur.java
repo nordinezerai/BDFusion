@@ -9,14 +9,15 @@ public class Mediateur {
 
     XMLDAO xmldao = new XMLDAO();
     ExcelDAO exceldao = new ExcelDAO();
-
+    SQLDAO sqldao = new SQLDAO();
     public Mediateur() {
 
     }
 
+    // Le nombre d'heures par enseignants n'apparait que dans la source XML
     public int heureTotalEnseignant(Enseignant e){
         int heures=xmldao.heureTotalEnseignant(e);
-        heures = heures + exceldao.heureTotalEnseignant(e);
+
         return heures;
     }
 
@@ -26,6 +27,15 @@ public class Mediateur {
 
         list.addAll(xmldao.listEnseignants());
         list.addAll(exceldao.listEnseignants());
+        list.addAll(sqldao.listEnseignants());
+
+        //Suppression des doublons
+        for(int i=0;i<list.size();i++){
+            for(int j=i+1;j<list.size();j++){
+                if(list.get(i).getId()==list.get(j).getId()) list.remove(j);
+            }
+        }
+
         return list;
     }
 
