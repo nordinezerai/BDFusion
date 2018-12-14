@@ -24,9 +24,9 @@ telephone   varchar(45) DEFAULT NULL,
 dateNaissance   date NOT NULL,
 CONSTRAINT PK_ID PRIMARY KEY (ID_etudiant) );
 
-INSERT INTO Etudiant values (10, 'Nom10', 'Prenom10', 'fr', 'Licence', 'fr', 2008, 'M1', '012345678' , DATE('05/03/1985'));
-INSERT INTO Etudiant values (11, 'Nom11', 'Prenom11', 'de', 'M1', 'fr', 2009, 'M2', '012345678', DATE('08/09/1985'));
-INSERT INTO Etudiant values (12, 'Nom12', 'Prenom12', 'it', 'Licence', 'it', 2008, 'M1', '012345678', DATE('02/07/1987'));
+INSERT INTO Etudiant values (10, 'Nom10', 'Prenom10', 'fr', 'Licence', 'fr', 2008, 'M1', '012345678' , DATE('1985-03-05'));
+INSERT INTO Etudiant values (11, 'Nom11', 'Prenom11', 'de', 'M1', 'fr', 2009, 'M2', '012345678', DATE('1985-09-08'));
+INSERT INTO Etudiant values (12, 'Nom12', 'Prenom12', 'it', 'Licence', 'it', 2008, 'M1', '012345678', DATE('1987-07-02'));
 
 CREATE TABLE   Cours (
 NumCours   integer NOT NULL,
