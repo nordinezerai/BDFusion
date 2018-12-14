@@ -16,7 +16,7 @@ public class Mediateur {
 
     public int heureTotalEnseignant(Enseignant e){
         int heures=xmldao.heureTotalEnseignant(e);
-        heures = heures + exceldao.heureTotalEnseignant(e);
+        //heures = heures + exceldao.heureTotalEnseignant(e);
         return heures;
     }
 
@@ -25,7 +25,7 @@ public class Mediateur {
         List<Enseignant> list = new ArrayList<Enseignant>();
 
         list.addAll(xmldao.listEnseignants());
-        list.addAll(exceldao.listEnseignants());
+        //list.addAll(exceldao.listEnseignants());
         return list;
     }
 
