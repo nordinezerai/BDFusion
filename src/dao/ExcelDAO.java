@@ -46,6 +46,7 @@ public class ExcelDAO {
 
             rs.close();
             stmt.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -83,6 +84,7 @@ public class ExcelDAO {
 
             rs.close();
             stmt.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -118,6 +120,7 @@ public class ExcelDAO {
 
             rs.close();
             stmt.close();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
